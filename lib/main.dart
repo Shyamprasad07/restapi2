@@ -32,7 +32,9 @@ class _MyApiState extends State<MyApi> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text("Simple api fech"),
+      ),
       body: 
        const HomePage(),
     );
