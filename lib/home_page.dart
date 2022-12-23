@@ -4,7 +4,6 @@ import 'package:f1api_test/model.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -13,76 +12,77 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<SamplePosts>samplePosts = [];
+  List<UserDetails> userDetails = [];
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: getData(),
       builder: (context, snapshot) {
-        if (snapshot.hasData){
+        if (snapshot.hasData) {
           return ListView.builder(
-          itemCount: samplePosts.length,
-          itemBuilder: (context, index) {
-            return Card(
-              child: Container(
-                height: 300,
-                width: 300,
-                color: Colors.greenAccent,
-                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                margin: const EdgeInsets.all(10),
+            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+            itemCount: userDetails.length,
+            itemBuilder: (context, index) {
+              return Container(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                margin: const EdgeInsets.only(bottom: 10),
+                height: 200,
+                decoration: BoxDecoration(
+                    color: Colors.black12,
+                    borderRadius: BorderRadius.circular(10)),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'user id : ${samplePosts[index].userId}',
-                      style: const TextStyle(fontSize: 18),
-                    ),
-                    Text(
-                      'Id : ${samplePosts[index].id}',
-                      style: const TextStyle(fontSize: 18),
-                    ),
-                    Text(
-                      'Title : ${samplePosts[index].title}',
-                    maxLines: samplePosts.length,
-                      style: const TextStyle(fontSize: 18),
-                    ),
-                    Text(
-                      'Body : ${samplePosts[index].body}',
-                      maxLines:samplePosts.length,
-                      style: const TextStyle(fontSize: 18),
-                    ),
+                    getText(index, 'ID: ', userDetails[index].id.toString()),
+                    getText(
+                        index, 'Name: ', userDetails[index].name.toString()),
+                    getText(
+                        index, 'Email: ', userDetails[index].email.toString()),
+                    getText(
+                        index, 'Phone: ', userDetails[index].phone.toString()),
+                    getText(index, 'Website: ',
+                        userDetails[index].website.toString()),
+                    getText(index, 'Company: ',
+                        userDetails[index].company.name.toString()),
+                    getText(index, 'Address: ',
+                        '${userDetails[index].address.suite.toString()},${userDetails[index].address.street.toString()},${userDetails[index].address.city.toString()} - ${userDetails[index].address.zipcode.toString()},'),
                   ],
                 ),
-              ),
-            );
-          },
-        );
-
-        }
-        else {
-          return  const Center(
+              );
+            },
+          );
+        } else {
+          return const Center(
             child: CircularProgressIndicator(),
           );
         }
-      }
-      
+      },
     );
   }
 
-  Future<List<SamplePosts>> getData() async {
-    final response =
-        await http.get(Uri.parse('https://jsonplaceholder.typicode.com/posts'));
-         var data = jsonDecode(response.body.toString());
-         if (response.statusCode ==200){
-          for(Map<String, dynamic> index in data){
-            samplePosts.add(SamplePosts.fromJson(index));
-          }
-            return samplePosts;
-          } else{
-            return samplePosts;
-          }
-         }
+  Text getText(int index, String fieldName, String content) {
+    return Text.rich(TextSpan(children: [
+      TextSpan(
+          text: fieldName,
+          style: (const TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
+      TextSpan(text: content, style: (const TextStyle(fontSize: 16))),
+    ]));
   }
 
+  Future<List<UserDetails>> getData() async {
+    final response =
+        await http.get(Uri.parse('https://jsonplaceholder.typicode.com/users'));
+    var data = jsonDecode(response.body.toString());
+    if (response.statusCode == 200) {
+      for (Map<String, dynamic> index in data) {
+        userDetails.add(UserDetails.fromJson(index));
+      }
+      return userDetails;
+    } else {
+      return userDetails;
+    }
+  }
+}
