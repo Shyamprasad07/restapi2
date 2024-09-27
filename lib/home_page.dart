@@ -21,41 +21,7 @@ class _HomePageState extends State<HomePage> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return ListView.builder(
-            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-            itemCount: userDetails.length,
-            itemBuilder: (context, index) {
-              return Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                margin: const EdgeInsets.only(bottom: 10),
-                height: 200,
-                decoration: BoxDecoration(
-                    color: Colors.black12,
-                    borderRadius: BorderRadius.circular(10)),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    getText(index, 'ID: ', userDetails[index].id.toString()),
-                    getText(
-                        index, 'Name: ', userDetails[index].name.toString()),
-                    getText(
-                        index, 'Email: ', userDetails[index].email.toString()),
-                    getText(
-                        index, 'Phone: ', userDetails[index].phone.toString()),
-                    getText(index, 'Website: ',
-                        userDetails[index].website.toString()),
-                    getText(index, 'Company: ',
-                        userDetails[index].company.name.toString()),
-                    getText(index, 'Address: ',
-                        '${userDetails[index].address.suite.toString()},${userDetails[index].address.street.toString()},${userDetails[index].address.city.toString()} - ${userDetails[index].address.zipcode.toString()},'),
-                  ],
-                ),
-              );
-            },
-          );
-        } else {
-          return const Center(
+
             child: CircularProgressIndicator(),
           );
         }
